@@ -1,5 +1,5 @@
 library(testthat)
-library(grattantheme)
+library(cietheme)
 
-test_check("grattantheme")
+test_check("cietheme")
 

@@ -1,10 +1,10 @@
-#' Assemble a chart featuring the Grattan logo and grey header
+#' Assemble a chart featuring the CIE logo and grey header
 #'
 #' Takes a ggplot2 object and formats it to look like a
-#' Grattan Powerpoint slide. The function adds a grey header box containing
-#' the chart title and Grattan logo, along with subtitle and caption text.
+#' CIE Powerpoint slide. The function adds a grey header box containing
+#' the chart title and CIE logo, along with subtitle and caption text.
 #' Title text is automatically wrapped if longer than one line.
-#' You will rarely need to call this function directly - use `grattan_save()`
+#' You will rarely need to call this function directly - use `cie_save()`
 #' to save a ggplot2 object as a 'slide'-like image.
 #'
 #' The function allows for three types with different layouts:
@@ -30,9 +30,9 @@
 #'     labs(title = "My title",
 #'          subtitle = "My subtitle",
 #'          caption = "My caption") +
-#'     theme_grattan()
+#'     theme_cie()
 #'
-#' # Create an image that includes the Grattan logo
+#' # Create an image that includes the CIE logo
 #'
 #' p_logo <- create_fullslide(p)
 #'
@@ -80,8 +80,8 @@ create_fullslide <- function(plot = last_plot(),
 
     # Determine fonts based on font parameter
     font <- match.arg(font)
-    title_font <- get_grattan_font(font, "title")
-    main_font <- get_grattan_font(font, "body")
+    title_font <- get_cie_font(font, "title")
+    main_font <- get_cie_font(font, "body")
 
     stored_title <- labs$title
     stored_subtitle <- labs$subtitle

@@ -1,0 +1,144 @@
+
+base_y_plot <- ggplot2::msleep %>%
+  ggplot(aes(x = reorder(name, sleep_total),
+             y = sleep_total)) +
+  geom_col() +
+  theme_cie()
+
+base_x_plot <- ggplot(mtcars,
+                      aes(x = wt, y = mpg)) +
+  geom_point() +
+  theme_cie()
+
+cie_y_axis_plot <- base_y_plot +
+  cie_y_continuous()
+
+cie_x_axis_plot <- base_x_plot +
+  cie_x_continuous()
+
+built_base_y_plot <- ggplot_build(base_y_plot)
+built_base_x_plot <- ggplot_build(base_x_plot)
+
+built_cie_y_axis_plot <- ggplot_build(cie_y_axis_plot)
+built_cie_x_axis_plot <- ggplot_build(cie_x_axis_plot)
+
+test_that("axis on base plot is below the data minimum", {
+
+  expect_lt(built_base_y_plot$layout$panel_params[[1]]$y.range[1], 0)
+  expect_lt(built_base_x_plot$layout$panel_params[[1]]$x.range[1], min(mtcars$wt))
+
+})
+
+test_that("axis on plot with CIE scale is equal to the dataminimum", {
+
+  expect_equal(built_cie_y_axis_plot$layout$panel_params[[1]]$y.range[1],
+               0)
+  expect_equal(built_cie_x_axis_plot$layout$panel_params[[1]]$x.range[1],
+               min(mtcars$wt))
+
+})
+
+
+
+
+test_that("manual expansion works", {
+
+  expand_amount <- 0.2
+  plot_with_expansion <- base_x_plot +
+    scale_x_continuous_cie(expand_left = expand_amount, expand_right = expand_amount) +
+    scale_y_continuous_cie(expand_top = expand_amount, expand_bottom = expand_amount)
+
+  mtcars_x_range <- max(mtcars$wt) - min(mtcars$wt)
+  mtcars_y_range <- max(mtcars$mpg) - min(mtcars$mpg)
+
+  built_plot_with_expansion <- ggplot_build(plot_with_expansion)
+
+  x_limits <- built_plot_with_expansion$layout$panel_params[[1]]$x.range
+  x_min <- x_limits[[1]]
+  x_max <- x_limits[[2]]
+
+  y_limits <- built_plot_with_expansion$layout$panel_params[[1]]$y.range
+  y_min <- y_limits[[1]]
+  y_max <- y_limits[[2]]
+
+  expect_equal(x_min, min(mtcars$wt) - (mtcars_x_range * expand_amount))
+  expect_equal(x_max, max(mtcars$wt) + (mtcars_x_range * expand_amount))
+  expect_equal(y_min, min(mtcars$mpg) - (mtcars_y_range * expand_amount))
+  expect_equal(y_max, max(mtcars$mpg) + (mtcars_y_range * expand_amount))
+
+})
+
+test_that("cie_y_continuous hides zero label when axis starts at 0", {
+  p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+    geom_point() +
+    cie_y_continuous(limits = c(0, NA)) +
+    theme_cie()
+
+  built <- ggplot2::ggplot_build(p)
+
+  expect_true(!is.null(p$scales$get_scales("y")))
+
+  y_labels <- built$layout$panel_params[[1]]$y$get_labels()
+  zero_positions <- built$layout$panel_params[[1]]$y$get_breaks() == 0
+
+  if (any(zero_positions)) {
+    expect_equal(y_labels[zero_positions], "")
+  }
+})
+
+test_that("cie_x_continuous hides zero label when axis starts at 0", {
+  p <- ggplot(mtcars, aes(x = mpg, y = wt)) +
+    geom_point() +
+    cie_x_continuous(limits = c(0, NA)) +
+    theme_cie()
+
+  built <- ggplot2::ggplot_build(p)
+
+  expect_true(!is.null(p$scales$get_scales("x")))
+
+  x_labels <- built$layout$panel_params[[1]]$x$get_labels()
+  zero_positions <- built$layout$panel_params[[1]]$x$get_breaks() == 0
+
+  if (any(zero_positions)) {
+    expect_equal(x_labels[zero_positions], "")
+  }
+})
+
+test_that("custom labels parameter is respected", {
+  custom_labels <- function(x) paste0("$", x)
+
+  p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+    geom_point() +
+    cie_y_continuous(limits = c(0, NA), labels = custom_labels) +
+    theme_cie()
+
+  built <- ggplot2::ggplot_build(p)
+
+  y_labels <- built$layout$panel_params[[1]]$y$get_labels()
+  zero_positions <- built$layout$panel_params[[1]]$y$get_breaks() == 0
+
+  if (any(zero_positions)) {
+    expect_equal(y_labels[zero_positions], "$0")
+  }
+})
+
+test_that("non-zero starting axes show all labels including zero if present", {
+  df <- data.frame(x = 1:10, y = c(-4, -3, -2, -1, 0, 1, 2, 3, 4, 5))
+  p <- ggplot(df, aes(x = x, y = y)) +
+    geom_point() +
+    cie_y_continuous() +
+    theme_cie()
+
+  built <- ggplot2::ggplot_build(p)
+
+  y_breaks <- built$layout$panel_params[[1]]$y$get_breaks()
+  y_labels <- built$layout$panel_params[[1]]$y$get_labels()
+
+  expect_true(any(y_breaks < 0, na.rm = TRUE))
+
+  zero_positions <- !is.na(y_breaks) & y_breaks == 0
+  if (any(zero_positions)) {
+    zero_label <- y_labels[zero_positions]
+    expect_true(zero_label != "")
+  }
+})

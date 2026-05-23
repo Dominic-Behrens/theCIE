@@ -1,6 +1,6 @@
 p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
      geom_point() +
-     theme_grattan() +
+     theme_cie() +
      labs(title = "Title",
           subtitle = "Subtitle",
           caption = "Notes: say something. Sources: this citation.")

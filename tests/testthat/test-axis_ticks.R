@@ -4,13 +4,13 @@ context("test axis labels not shown when disabled")
 base_plot <- ggplot(mtcars, aes(x = wt,
              y = mpg)) +
   geom_point() +
-  labs(title = "Here goes a Grattan title, blah blah lots of words go here extremely orange",
+  labs(title = "Here goes a CIE title, blah blah lots of words go here extremely orange",
        caption = "Notes: Blah Source: somewhere")
 
-base_plot + theme_grattan(flipped = TRUE) + theme(axis.ticks= element_blank())
+base_plot + theme_cie(flipped = TRUE) + theme(axis.ticks= element_blank())
 
 flipped_plot <-  base_plot +
-  theme_grattan(flipped = T) +
+  theme_cie(flipped = T) +
   theme(axis.ticks = element_blank())
 
 test_that("no ticks on flipped plot when disabled", {
@@ -32,7 +32,7 @@ bar_chart <- ggplot(mt_no_rownames,
   geom_col()
 
 test_that("bar chart ticks shown when appropriate", {
-  regular_bar <- bar_chart + theme_grattan()
+  regular_bar <- bar_chart + theme_cie()
   expect_null(regular_bar$theme$axis.ticks.x)
   expect_is(regular_bar$theme$axis.ticks.y, "element_blank")
   expect_is(regular_bar$theme$axis.ticks, "element_line")
@@ -40,12 +40,12 @@ test_that("bar chart ticks shown when appropriate", {
 
 
   # coord_flip() is now auto-detected, so this behaves like flipped = TRUE
-  flipped_bar_default <- bar_chart + coord_flip() + theme_grattan()
+  flipped_bar_default <- bar_chart + coord_flip() + theme_cie()
   expect_is(flipped_bar_default$theme$axis.ticks.x, "element_blank")
   expect_null(flipped_bar_default$theme$axis.ticks.y)
   vdiffr::expect_doppelganger("flipped bar default", flipped_bar_default)
 
-  flipped_bar_fliptrue <- bar_chart + coord_flip() + theme_grattan(flipped = T)
+  flipped_bar_fliptrue <- bar_chart + coord_flip() + theme_cie(flipped = T)
   expect_is(flipped_bar_fliptrue$theme$axis.ticks.x, "element_blank")
   expect_null(flipped_bar_fliptrue$theme$axis.ticks.y)
   vdiffr::expect_doppelganger("flipped bar with flipped = TRUE",
@@ -53,7 +53,7 @@ test_that("bar chart ticks shown when appropriate", {
 
   flipped_bar_noticks <- bar_chart +
     coord_flip() +
-    theme_grattan(flipped = TRUE) +
+    theme_cie(flipped = TRUE) +
     theme(axis.ticks = element_blank())
 
   expect_null(flipped_bar_noticks$theme$axis.ticks.y)

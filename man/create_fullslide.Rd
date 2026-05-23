@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_fullslide.R
 \name{create_fullslide}
 \alias{create_fullslide}
-\title{Assemble a chart featuring the Grattan logo and grey header}
+\title{Assemble a chart featuring the CIE logo and grey header}
 \usage{
 create_fullslide(plot = last_plot(), type, font = c("slide", "normal"))
 }
@@ -20,10 +20,10 @@ An object of class "patchwork" with full slide dimensions (16:9 PowerPoint slide
 }
 \description{
 Takes a ggplot2 object and formats it to look like a
-Grattan Powerpoint slide. The function adds a grey header box containing
-the chart title and Grattan logo, along with subtitle and caption text.
+CIE Powerpoint slide. The function adds a grey header box containing
+the chart title and CIE logo, along with subtitle and caption text.
 Title text is automatically wrapped if longer than one line.
-You will rarely need to call this function directly - use `grattan_save()`
+You will rarely need to call this function directly - use `cie_save()`
 to save a ggplot2 object as a 'slide'-like image.
 }
 \details{
@@ -42,9 +42,9 @@ p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
     labs(title = "My title",
          subtitle = "My subtitle",
          caption = "My caption") +
-    theme_grattan()
+    theme_cie()
 
-# Create an image that includes the Grattan logo
+# Create an image that includes the CIE logo
 
 p_logo <- create_fullslide(p)
 

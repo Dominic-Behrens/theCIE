@@ -1,0 +1,57 @@
+url: ~
+
+template:
+  bootstrap: 5
+
+reference:
+  - title: Theme
+    contents:
+      - theme_cie
+      - cie_axes
+      - check_chart
+  - title: Colours and palettes
+    contents:
+      - cie_pal
+      - cie_palettes
+      - palette_order
+      - cie_palette_set
+      - make_cie_pal
+      - make_cie_pal_discrete
+      - cie_colour_manual
+      - cie_fill_manual
+      - scale_colour_cie
+      - scale_fill_cie
+      - register_palette
+  - title: Saving charts
+    contents:
+      - cie_save
+      - cie_save_all
+      - cie_save_pptx
+      - cie_save_overleaf
+      - save_chartdata
+      - create_fullslide
+      - watermark
+  - title: Annotations
+    contents:
+      - cie_label
+      - cie_label_repel
+      - cie_arrow
+      - cie_point_filled
+      - wrap_labs
+      - str_wrap_factor
+      - colour_text
+  - title: Overleaf integration
+    contents:
+      - set_overleaf_project
+      - get_overleaf_project
+      - export_latex_code
+  - title: AI coding guide
+    contents:
+      - cie_write_ai_guide
+  - title: Utilities
+    contents:
+      - fct_case_when
+      - paulify_classifications
+      - remove_endash
+      - stitch_pdfs
+      - set_aesthetics

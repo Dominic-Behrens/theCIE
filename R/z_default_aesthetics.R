@@ -5,19 +5,19 @@ utils::globalVariables("vanilla_geom_aesthetics")
 #'
 #' A vector of geoms exported from \code{ggplot2} and extension packages. This
 #' vector is iterated on to set the default aesthetics for each geom, allowing
-#' the grattan colours to be plotted automatically.
+#' the CIE colours to be plotted automatically.
 #'
 #' @format A vector
 "all_geoms"
 
 
-#' A list of plot options reflecting the Grattan brand
+#' A list of plot options reflecting the CIE brand
 #'
-plot_opts_grattan <- list(
-  ggplot2.continuous.colour = scale_colour_grattan,
-  ggplot2.continuous.fill = scale_fill_grattan,
-  ggplot2.discrete.colour = function() scale_colour_grattan(discrete = TRUE),
-  ggplot2.discrete.fill = function() scale_fill_grattan(discrete = TRUE)
+plot_opts_cie <- list(
+  ggplot2.continuous.colour = scale_colour_cie,
+  ggplot2.continuous.fill = scale_fill_cie,
+  ggplot2.discrete.colour = function() scale_colour_cie(discrete = TRUE),
+  ggplot2.discrete.fill = function() scale_fill_cie(discrete = TRUE)
 )
 
 #' The vanilla plotting options
@@ -62,7 +62,7 @@ plot_opts_vanilla <- list(
 #' changes settings where the default is not NA; no need for \code{geom_point}
 #' to have a default font family.
 #'
-#' This is used inside `.set_grattan_aesthetics()`
+#' This is used inside `.set_cie_aesthetics()`
 #'
 #' @param geom (character) the geom to change (e.g. \code{point} or
 #'   \code{line})
@@ -92,14 +92,14 @@ plot_opts_vanilla <- list(
 }
 
 
-#' Set the default ggplot2 aesthetics to grattan branding
+#' Set the default ggplot2 aesthetics to CIE branding
 #'
 #' A wrapper for a bunch of other functions to set ggplot2 default aesthetics.
 #' @importFrom utils getFromNamespace
-.set_grattan_aesthetics <- function() {
+.set_cie_aesthetics <- function() {
 
   # Skip this for ggplot2 4.0.0+ as geoms now use from_theme() expressions
-  # which properly respect theme settings. The grattanify_geom_defaults()
+  # which properly respect theme settings. The cieify_geom_defaults()
   # function will handle setting appropriate defaults.
   if (utils::packageVersion("ggplot2") >= "4.0.0") {
     return(invisible(NULL))
@@ -117,13 +117,13 @@ plot_opts_vanilla <- list(
     }, error = function(e) NULL)
   }
 
-  current_aesthetics <- grattantheme::all_geoms %>%
+  current_aesthetics <- cietheme::all_geoms %>%
     purrr::map(get_geom_aes) %>%
-    purrr::set_names(grattantheme::all_geoms)
+    purrr::set_names(cietheme::all_geoms)
 
   # Overwrite elements of the current_aesthetics to use theme settings
   # Just font family to inter (if available) and col/fill to QND blue stone
-  grattan_aesthetics <- current_aesthetics %>%
+  cie_aesthetics <- current_aesthetics %>%
     # purrr::map(
     #   # We use .prep_aes() (defined above) to handle NULLS and NAs
     #   .prep_aes,
@@ -133,17 +133,17 @@ plot_opts_vanilla <- list(
     purrr::map(
       .prep_aes,
       aes = "colour",
-      setting <- grattan_orange
+      setting <- cie_orange
     ) %>%
     purrr::map(
       .prep_aes,
       aes = "fill",
-      setting <- grattan_orange
+      setting <- cie_orange
     )
 
   # nolint start
   purrr::iwalk(
-    grattan_aesthetics,
+    cie_aesthetics,
     ~ .safe_set_geom_aesthetics(
       geom = .y,
       new = .x
@@ -155,19 +155,19 @@ plot_opts_vanilla <- list(
   ggplot2::update_geom_defaults(
     geom = "sf",
     new = list(
-      col = grattan_orange,
-      fill = grattan_orange
+      col = cie_orange,
+      fill = cie_orange
     )
   )
 }
 
 #' Set \code{ggplot2} default aesthetics
 #'
-#' Sets global options for \code{ggplot2}. If \code{type = "grattan"}, grattan brand
+#' Sets global options for \code{ggplot2}. If \code{type = "cie"}, CIE brand
 #' elements (colours and fonts) will be used by default in ggplot. To restore
 #' the defaults use \code{type = "vanilla"}.
 #'
-#' @param type (character) Which aesthetics to use? One of "grattan" or "vanilla".
+#' @param type (character) Which aesthetics to use? One of "cie" or "vanilla".
 #'
 #' @export
 #' @examples
@@ -175,7 +175,7 @@ plot_opts_vanilla <- list(
 #' set_aesthetics(type = "vanilla")
 #' }
 set_aesthetics <- function(type) {
-  nice_type <- ifelse(type == "grattan", "grattan", type)
+  nice_type <- ifelse(type == "cie", "cie", type)
 
   rule <- paste(rep("\u2500", 40), collapse = "")
 
@@ -186,9 +186,9 @@ set_aesthetics <- function(type) {
   )
 
 
-  if (type == "grattan") {
-    options(plot_opts_grattan)
-    .set_grattan_aesthetics()
+  if (type == "cie") {
+    options(plot_opts_cie)
+    .set_cie_aesthetics()
     packageStartupMessage(the_message)
   } else if (type == "vanilla") {
     # Set default aesthetics

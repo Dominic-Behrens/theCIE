@@ -17,7 +17,7 @@ Returns the path to the atlas folder of your chosen Overleaf
   is stored as an environment variable for the current R session only.
 }
 \details{
-This function is called internally by \code{grattan_save_overleaf()},
+This function is called internally by \code{cie_save_overleaf()},
   but can also be used directly if you need the Overleaf atlas path for other
   purposes.
 
@@ -42,5 +42,5 @@ write.csv(my_data, file.path(atlas_path, "my_data.csv"))
 }
 \seealso{
 \code{\link{set_overleaf_project}} to change which project is used,
-  \code{\link{grattan_save_overleaf}} to save charts directly to Overleaf
+  \code{\link{cie_save_overleaf}} to save charts directly to Overleaf
 }

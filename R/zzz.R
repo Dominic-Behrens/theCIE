@@ -1,8 +1,8 @@
 .onLoad <- function(libname, pkgname) {
 
   register_palette()
-  set_aesthetics("grattan")
-  setup_grattan_fonts()
+  set_aesthetics("cie")
+  setup_cie_fonts()
 
 }
 

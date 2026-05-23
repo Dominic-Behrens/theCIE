@@ -19,33 +19,33 @@ base_plot <- mtcars %>%
   ggplot(aes(x = wt,
              y = mpg)) +
   geom_point() +
-  labs(title = "Here goes a Grattan title, blah blah lots of words go here and it's very long",
+  labs(title = "Here goes a CIE title, blah blah lots of words go here and it's very long",
        caption = "Notes: Blah Source: somewhere")
 
 normal_plot <- base_plot +
-  theme_grattan() +
+  theme_cie() +
   labs(subtitle = "Either put units here or jam an elaborate thing here that describes both axes, whatevs")
 
 scatter_plot <- base_plot +
-  theme_grattan(chart_type = "scatter") +
+  theme_cie(chart_type = "scatter") +
   labs(subtitle = "Either put units here or jam an elaborate thing here that describes both axes, whatevs")
 
 
 border_plot <- base_plot +
   facet_wrap( ~ cyl) +
-  theme_grattan(panel_borders = TRUE) +
+  theme_cie(panel_borders = TRUE) +
   labs(subtitle = "Either put units here or jam an elaborate thing here that describes both axes, whatevs")
 
 coloured_plot <- base_plot +
   geom_point(aes(col = factor(cyl))) +
-  theme_grattan() +
+  theme_cie() +
   labs(subtitle = "Either put units here or jam an elaborate thing here that describes both axes, whatevs")
 
 no_subtitle_plot <- base_plot +
-  theme_grattan()
+  theme_cie()
 
 short_subtitle_plot <- base_plot +
-  theme_grattan() +
+  theme_cie() +
   labs(subtitle = "This is a short subtitle")
 
 # Use font = "normal" for consistent tests across platforms
@@ -63,7 +63,7 @@ fullslide_half_plot <- normal_plot %>%
   create_fullslide("fullslide_half", font = "normal")
 
 orange_plot <- base_plot +
-  theme_grattan(background = "orange")
+  theme_cie(background = "orange")
 
 
 test_that("normal plot looks correct", {

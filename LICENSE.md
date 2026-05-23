@@ -1,6 +1,7 @@
 # MIT License
 
-Copyright (c) 2020 Matt Cowgill
+Copyright (c) 2020 Matt Cowgill (original grattantheme)
+Copyright (c) 2026 Centre for International Economics (cietheme fork)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

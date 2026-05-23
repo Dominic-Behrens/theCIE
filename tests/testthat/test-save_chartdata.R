@@ -3,7 +3,7 @@ library(patchwork)
 
 p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
      geom_point() +
-     theme_grattan() +
+     theme_cie() +
      labs(title = "Title",
           subtitle = "Subtitle",
           caption = "Caption")
@@ -27,11 +27,11 @@ test_that("save_chartdata works with patchwork plots", {
   # Create two simple plots with the same data
   p1 <- ggplot(mtcars, aes(x = wt, y = mpg)) +
     geom_point() +
-    theme_grattan()
+    theme_cie()
 
   p2 <- ggplot(mtcars, aes(x = hp, y = mpg)) +
     geom_point() +
-    theme_grattan()
+    theme_cie()
 
   # Combine with patchwork
   p_combined <- p1 + p2 +
@@ -86,11 +86,11 @@ test_that("save_chartdata handles patchwork without proper annotations", {
 
   p1 <- ggplot(mtcars, aes(x = wt, y = mpg)) +
     geom_point() +
-    theme_grattan()
+    theme_cie()
 
   p2 <- ggplot(mtcars, aes(x = hp, y = mpg)) +
     geom_point() +
-    theme_grattan()
+    theme_cie()
 
   # Combine without annotations
   p_no_annotations <- p1 + p2

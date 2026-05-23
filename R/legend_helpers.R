@@ -1,7 +1,7 @@
 #' Create the css needed to colour text using ggtext
 #'
 #' This is a helper function to wrap the css to make text certain colours. This
-#' will be useful when making grattan charts. This should be used within `ggtext::geom_richtext()`
+#' will be useful when making CIE charts. This should be used within `ggtext::geom_richtext()`
 #' or if being used in a sub-title or title it should be used in the `labs()` call together with
 #' `theme(plot.subtitle = element_markdown())`
 #'
@@ -38,7 +38,7 @@ colour_text <- function(colour, text, is_note = FALSE, bold_labs = TRUE) {
       ret <- glue::glue("<span style='color:{colour}'>{text}</span>")
     }
   }
-  if (is_note) ret <- glue::glue("<span style='color:{grattan_grey3}'>{text}</span>")
+  if (is_note) ret <- glue::glue("<span style='color:{cie_grey3}'>{text}</span>")
 
   return(ret)
 }

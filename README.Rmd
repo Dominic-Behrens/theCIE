@@ -17,73 +17,65 @@ library(tidyverse)
 ```
 
   <!-- badges: start -->
-  
-[![Codecov test coverage](https://codecov.io/gh/grattan/grattantheme/branch/master/graph/badge.svg)](https://codecov.io/gh/grattan/grattantheme?branch=master)
-[![R build status](https://github.com/grattan/grattantheme/workflows/R-CMD-check/badge.svg)](https://github.com/grattan/grattantheme/actions)
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
-[![R-CMD-check](https://github.com/grattan/grattantheme/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/grattan/grattantheme/actions/workflows/R-CMD-check.yaml)
+
+[![R-CMD-check](https://github.com/dominic-behrens/thecie/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/dominic-behrens/thecie/actions/workflows/R-CMD-check.yaml)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
   <!-- badges: end -->
 
 
-# grattantheme
-Create ggplot2 charts in the Grattan Institute style.
+# cietheme
 
-See the [grattantheme vignette](https://grattan.github.io/grattantheme/articles/using_grattantheme.html) to learn how to make your ggplot2 charts Grattan-y with `grattantheme`. 
+Create ggplot2 charts in The CIE (Centre for International Economics) style.
 
-See the [Data Visualisation](https://grattan.github.io/R_at_Grattan/data-visualisation.html) chapter of `Using R at Grattan Institute` for more about how to make great charts.
+`cietheme` is a fork of [grattantheme](https://github.com/grattan/grattantheme) rebranded for The CIE. All public symbols have been renamed from `grattan_*` to `cie_*`, and from `theme_grattan()` to `theme_cie()`. Base colour hex codes are placeholders pending the CIE brand palette.
 
-## Install grattantheme
+## Install cietheme
 
-The grattantheme package needs to be downloaded and installed from Github. The easiest way to do this is with the devtools package. If you don't have the devtools package, install it:
+```r
+# install.packages("pak")
+pak::pak("dominic-behrens/thecie")
+```
 
-`install.packages("devtools")`
-
-Once devtools is installed, you can download and install grattantheme as follows:
-
-`devtools::install_github("grattan/grattantheme", dependencies = TRUE, upgrade = "always")`
-
-Once grattantheme is installed, you can load it the same way you normally load an R package:
-
-`library(grattantheme)`
+```r
+library(cietheme)
+```
 
 ## Make your charts look nice
 
-See the [grattantheme vignette](https://grattan.github.io/grattantheme/articles/using_grattantheme.html) for a more complete guide.
+Use `theme_cie()` to format your ggplot2 charts in a style consistent with the CIE style guide, including elements such as gridline colours and line width, font size, etc. For scatter plots, `theme_cie(chart_type = "scatter")` provides a black y-axis. For charts with discrete values on the y-axis, `theme_cie(flipped = TRUE)` provides a vertical axis line and rotates gridlines (auto-detected for `coord_flip()` and horizontal bar charts).
 
-Use `theme_grattan()` to format your ggplot2 charts in a style consistent with the Grattan style guide, including elements such as gridline colours and line width, font size, etc. For scatter plots,  `theme_grattan(chart_type = "scatter")` provides a black y-axis. For charts with discrete values on the y axis, `theme_grattan(flipped = 'TRUE')` provides a vertical axis line and rotates gridlines.
-
-Use `scale_y_continuous_grattan()` (or `scale_x_continuous_grattan` if flipped) to set default values for your vertical axis that will work well with most Grattan charts. 
+Use `scale_y_continuous_cie()` (or `scale_x_continuous_cie()` if flipped) to set default values for your vertical axis that will work well with most CIE charts.
 
 The colours that will be used in your plot are:
 
 ```{r show-cols-image, echo = FALSE, warning=FALSE, dpi=350}
 library(tidyverse)
-library(grattantheme)
+library(cietheme)
 
 make_col_tibble <- function(n) {
-  
-  tibble(col = make_grattan_pal_discrete(n),
+
+  tibble(col = make_cie_pal_discrete(n),
          order = c(1:n),
          n = n)
-  
+
 }
 
-grattan_colours <- map_dfr(c(1:10), make_col_tibble)
+cie_colours <- map_dfr(c(1:10), make_col_tibble)
 
-grattan_colours$col <- factor(grattan_colours$col)
+cie_colours$col <- factor(cie_colours$col)
 
-grattan_colours <- grattan_colours %>%
+cie_colours <- cie_colours %>%
   mutate(n_desc = if_else(n == 1, "n = 1", paste0("  ", n)))
 
-col_plot <- grattan_colours %>%
-  ggplot(aes(x = reorder(n_desc, -n), 
-             y = order, 
+col_plot <- cie_colours %>%
+  ggplot(aes(x = reorder(n_desc, -n),
+             y = order,
              fill = col)) +
   geom_tile(col = "white", linewidth = 1) +
-  scale_fill_manual(values = levels(grattan_colours$col)) +
+  scale_fill_manual(values = levels(cie_colours$col)) +
   coord_flip(expand = FALSE, ylim = c(0, 13)) +
-  theme_grattan() +
+  theme_cie() +
   theme(panel.grid = element_blank(),
         axis.title = element_blank(),
         axis.ticks = element_blank(),
@@ -95,39 +87,38 @@ col_plot
 
 ```
 
-A range of colours from the style guide (such as `grattan_lightorange`, `grattan_darkred`, and so on) are defined for your convenience. Each colour has eight tints available, e.g. `grattan_lightorange` has lighter variants `grattan_lightorange1` through `grattan_lightorange8` (closest to white). These can be used to allow highlighting or when filling in block colours behind text, such as when designing tables.
+A range of colours from the style guide (such as `cie_lightorange`, `cie_darkred`, and so on) are defined for your convenience. Each colour has eight tints available, e.g. `cie_lightorange` has lighter variants `cie_lightorange1` through `cie_lightorange8` (closest to white). These can be used to allow highlighting or when filling in block colours behind text, such as when designing tables.
 
-Use `theme_grattan(background = "box")` to create a chart for a Grattan report box. 
+Use `theme_cie(background = "box")` to create a chart for a CIE report box.
 
 ## Add chart annotations and notes
 
-Use `grattan_label()`, `grattan_label_repel()`, or `grattan_arrow()` to add style-guide consistent annotations to your chart. 
+Use `cie_label()`, `cie_label_repel()`, or `cie_arrow()` to add style-guide consistent annotations to your chart.
 
-Use `labs(caption = "Notes: Your notes. Source: Your source.")` to add notes and sources, with text appropriately wrapped. 
+Use `labs(caption = "Notes: Your notes. Source: Your source.")` to add notes and sources, with text appropriately wrapped.
 
 ## Check how your chart looks
 
-Use `check_chart_aspect_ratio()` to create a temporary pop-up chart to inspect chart appearances at different aspect ratios.
+Use `check_chart()` to create a temporary pop-up chart to inspect chart appearances at different aspect ratios.
 
 ## Save your nice looking charts
 
-Use `grattan_save()` to save your ggplot2 charts (eg. as `.png` or `.pdf` files) for use elsewhere, such as in Powerpoint or LaTeX with the size and resolution set to style guide-consistent values. You can save your charts in a variety of sizes and styles (see `?grattan_save()` for a list). 
+Use `cie_save()` to save your ggplot2 charts (eg. as `.png` or `.pdf` files) for use elsewhere, such as in Powerpoint or LaTeX with the size and resolution set to style guide-consistent values. You can save your charts in a variety of sizes and styles (see `?cie_save()` for a list).
 
-Want to save your chart as a Powerpoint file? Use `grattan_save(save_pptx = TRUE)` or the standalone `grattan_save_pptx()` function.
+Want to save your chart as a Powerpoint file? Use `cie_save(save_pptx = TRUE)` or the standalone `cie_save_pptx()` function.
 
-Want to save your chart and accompanying data as a properly-formatted .xlsx workbook? Use `grattan_save(save_data = TRUE)` or the 
-standalone `save_chartdata()` function.
+Want to save your chart and accompanying data as a properly-formatted .xlsx workbook? Use `cie_save(save_data = TRUE)` or the standalone `save_chartdata()` function.
 
-Save your chart in all Grattan formats - along with chart data - using `grattan_save_all()`.
+Save your chart in all CIE formats - along with chart data - using `cie_save_all()`.
 
-Use `set_overleaf_project("project_name")` and then `grattan_save_overleaf()` to conveniently save your chart to an ongoing Overleaf report project.
-
-## Save animated charts
-
-Use `grattan_anim_save()` to save gganimate animations formatted in the Grattan style.
+Use `set_overleaf_project("project_name")` and then `cie_save_overleaf()` to conveniently save your chart to an ongoing Overleaf report project.
 
 ## Notes
 
 Some graph defaults (such as colour) will be modified during your R session; restart R to restore all defaults.
 
-Some manual modification to your chart will most likely be required in order to make it fully consistent with the style guide, just as it would in other visualisation software or Excel/Powerpoint. 
+Some manual modification to your chart will most likely be required in order to make it fully consistent with the style guide, just as it would in other visualisation software or Excel/Powerpoint.
+
+## Acknowledgements
+
+`cietheme` is forked from [`grattantheme`](https://github.com/grattan/grattantheme) by Matt Cowgill, Will Mackey and contributors at the Grattan Institute, released under MIT licence.

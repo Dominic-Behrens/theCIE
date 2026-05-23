@@ -3,7 +3,7 @@
 #' Opens your plot in a new window with the aspect ratio of the chart type
 #' selected. For fullslide chart types (fullslide, fullslide_narrow,
 #' fullslide_half), this will show the complete slide with the grey header,
-#' Grattan logo, and properly positioned title/subtitle/caption.
+#' CIE logo, and properly positioned title/subtitle/caption.
 #'
 #' @param type The chart type (e.g. \code{"normal"}, \code{"fullslide"}).
 #' @param object A ggplot2 plot object. Defaults to the last plot.
@@ -20,7 +20,7 @@
 #' ggplot(mtcars, aes(x = wt, y = mpg)) +
 #'   geom_point() +
 #'   labs(title = "My title", subtitle = "My subtitle") +
-#'   theme_grattan()
+#'   theme_cie()
 #' check_chart("fullslide")
 #' }
 #'

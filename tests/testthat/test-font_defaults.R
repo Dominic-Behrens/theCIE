@@ -4,10 +4,10 @@ base_plot <- mtcars %>%
   ggplot(aes(x = wt,
              y = mpg)) +
   geom_point() +
-  labs(title = "Here goes a Grattan title, blah blah lots of words go here extremely orange",
+  labs(title = "Here goes a CIE title, blah blah lots of words go here extremely orange",
        subtitle = "My subtitle",
        caption = "Notes: Blah Source: somewhere") +
-  theme_grattan()
+  theme_cie()
 
 base_plot$theme$text
 

@@ -1,11 +1,23 @@
 # Package-level font configuration storage
-.grattan_fonts <- new.env(parent = emptyenv())
+.cie_fonts <- new.env(parent = emptyenv())
 
 #' Get path to shared font files
+#'
+#' Resolution order:
+#' \enumerate{
+#'   \item \code{getOption("cie_font_path")} if set and the directory exists.
+#'   \item Dropbox Business shared folder (legacy grattantheme behaviour),
+#'         looking for \code{<dropbox root>/CIE Team/Templates/Font}.
+#' }
 #'
 #' @return Character string path to font folder, or NULL if not found
 #' @keywords internal
 get_font_folder_path <- function() {
+
+  user_path <- getOption("cie_font_path")
+  if (!is.null(user_path) && dir.exists(user_path)) {
+    return(user_path)
+  }
 
   dropbox_info_location <-
     if (Sys.getenv("OS") == "Windows_NT") {
@@ -28,7 +40,7 @@ get_font_folder_path <- function() {
   }
 
   font_path <- file.path(dropbox_info$business$root_path,
-                         "Grattan Team", "Templates", "Font")
+                         "CIE Team", "Templates", "Font")
 
   if (dir.exists(font_path)) font_path else NULL
 }
@@ -94,16 +106,16 @@ register_shared_fonts <- function(font_folder) {
 #' @return Invisible NULL
 #' @keywords internal
 #' @importFrom systemfonts system_fonts registry_fonts
-setup_grattan_fonts <- function() {
+setup_cie_fonts <- function() {
 
   # Defaults
-  .grattan_fonts$normal <- "sans"
-  .grattan_fonts$slide_title <- "sans"
-  .grattan_fonts$slide_body <- "sans"
+  .cie_fonts$normal <- "sans"
+  .cie_fonts$slide_title <- "sans"
+  .cie_fonts$slide_body <- "sans"
 
   # Track how fonts were found (for informative startup message)
-  .grattan_fonts$avenir_source <- "none"
-  .grattan_fonts$dm_serif_source <- "none"
+  .cie_fonts$avenir_source <- "none"
+  .cie_fonts$dm_serif_source <- "none"
 
   # Get system-installed fonts
 
@@ -111,13 +123,13 @@ setup_grattan_fonts <- function() {
 
   # Check for system-installed fonts first
   if ("DM Serif Display" %in% system_fonts) {
-    .grattan_fonts$slide_title <- "DM Serif Display"
-    .grattan_fonts$dm_serif_source <- "system"
+    .cie_fonts$slide_title <- "DM Serif Display"
+    .cie_fonts$dm_serif_source <- "system"
   }
 
   if ("Avenir Next" %in% system_fonts) {
-    .grattan_fonts$slide_body <- "Avenir Next"
-    .grattan_fonts$avenir_source <- "system"
+    .cie_fonts$slide_body <- "Avenir Next"
+    .cie_fonts$avenir_source <- "system"
   } else {
     # Try to load from shared folder via systemfonts registration
     font_folder <- get_font_folder_path()
@@ -126,12 +138,12 @@ setup_grattan_fonts <- function() {
       registration <- register_shared_fonts(font_folder)
 
       if (registration$avenir_next) {
-        .grattan_fonts$slide_body <- "Avenir Next"
-        .grattan_fonts$avenir_source <- "registered"
+        .cie_fonts$slide_body <- "Avenir Next"
+        .cie_fonts$avenir_source <- "registered"
       }
-      if (registration$dm_serif && .grattan_fonts$slide_title == "sans") {
-        .grattan_fonts$slide_title <- "DM Serif Display"
-        .grattan_fonts$dm_serif_source <- "registered"
+      if (registration$dm_serif && .cie_fonts$slide_title == "sans") {
+        .cie_fonts$slide_title <- "DM Serif Display"
+        .cie_fonts$dm_serif_source <- "registered"
       }
     }
   }
@@ -145,22 +157,22 @@ setup_grattan_fonts <- function() {
 #' @param element For "slide" type, either "title" or "body". Ignored for "normal".
 #' @return Character string with font family name
 #' @keywords internal
-get_grattan_font <- function(type = c("normal", "slide"),
+get_cie_font <- function(type = c("normal", "slide"),
                              element = c("body", "title")) {
   type <- match.arg(type)
   element <- match.arg(element)
 
   if (type == "normal") {
-    font <- .grattan_fonts$normal
+    font <- .cie_fonts$normal
     return(if (is.null(font)) "sans" else font)
   }
 
   if (element == "title") {
-    font <- .grattan_fonts$slide_title
+    font <- .cie_fonts$slide_title
     return(if (is.null(font)) "sans" else font)
   }
 
-  font <- .grattan_fonts$slide_body
+  font <- .cie_fonts$slide_body
   if (is.null(font)) "sans" else font
 }
 
@@ -170,11 +182,11 @@ get_grattan_font <- function(type = c("normal", "slide"),
 #' @keywords internal
 get_font_status_message <- function() {
 
-  normal_font <- if (is.null(.grattan_fonts$normal)) "sans" else .grattan_fonts$normal
-  slide_title <- if (is.null(.grattan_fonts$slide_title)) "sans" else .grattan_fonts$slide_title
-  slide_body <- if (is.null(.grattan_fonts$slide_body)) "sans" else .grattan_fonts$slide_body
-  avenir_source <- if (is.null(.grattan_fonts$avenir_source)) "none" else .grattan_fonts$avenir_source
-  dm_serif_source <- if (is.null(.grattan_fonts$dm_serif_source)) "none" else .grattan_fonts$dm_serif_source
+  normal_font <- if (is.null(.cie_fonts$normal)) "sans" else .cie_fonts$normal
+  slide_title <- if (is.null(.cie_fonts$slide_title)) "sans" else .cie_fonts$slide_title
+  slide_body <- if (is.null(.cie_fonts$slide_body)) "sans" else .cie_fonts$slide_body
+  avenir_source <- if (is.null(.cie_fonts$avenir_source)) "none" else .cie_fonts$avenir_source
+  dm_serif_source <- if (is.null(.cie_fonts$dm_serif_source)) "none" else .cie_fonts$dm_serif_source
 
   rule <- paste(rep("\u2500", 40), collapse = "")
   header <- paste0("\u2500\u2500 Fonts ", rule, "\n")
@@ -191,7 +203,7 @@ get_font_status_message <- function() {
     slide_display <- paste0(slide_title_display, " (title) + ", slide_body_display, " (body)")
   }
 
-  # Case 1: No Grattan fonts found at all
+  # Case 1: No CIE fonts found at all
   if (slide_title == "sans" && slide_body == "sans") {
     return(paste0(
       header,
@@ -224,7 +236,7 @@ get_font_status_message <- function() {
       "'slide'  - ", slide_display, "\n",
       paste(registered_fonts, collapse = ", "), " loaded from Dropbox.\n",
       "- PNG or JPEG outputs will render correctly\n",
-      "- PDF slide fonts require system install to render in Grattan style\n",
+      "- PDF slide fonts require system install to render in CIE style\n",
       "- PPTX slide chart fonts will require manual adjustment."
     ))
   }
@@ -234,6 +246,6 @@ get_font_status_message <- function() {
     header,
     "'normal' - ", normal_font_display, "\n",
     "'slide'  - ", slide_display, "\n",
-    "Some fonts may not render in Grattan style."
+    "Some fonts may not render in CIE style."
   )
 }

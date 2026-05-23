@@ -1,8 +1,8 @@
 #' Write an AI coding guide to your project directory
 #'
 #' Creates a markdown file with instructions for AI coding assistants
-#' (such as Claude, Codex, or Gemini) on how to create Grattan-styled
-#' charts using the \code{grattantheme} package. The guide covers chart styling
+#' (such as Claude, Codex, or Gemini) on how to create CIE-styled
+#' charts using the \code{cietheme} package. The guide covers chart styling
 #' conventions, colour palettes, saving functions, and common patterns.
 #'
 #' @param filename The name of the file to create. Defaults to \code{"CLAUDE.md"}.
@@ -23,18 +23,18 @@
 #' @examples
 #' \dontrun{
 #' # Write a CLAUDE.md file (default, for Claude Code)
-#' grattan_write_ai_guide()
+#' cie_write_ai_guide()
 #'
 #' # Write an AGENTS.md file (cross-tool standard for Codex, Gemini, etc.)
-#' grattan_write_ai_guide("AGENTS.md")
+#' cie_write_ai_guide("AGENTS.md")
 #'
 #' # Write to a specific directory
-#' grattan_write_ai_guide("CLAUDE.md", path = "path/to/project")
+#' cie_write_ai_guide("CLAUDE.md", path = "path/to/project")
 #'
 #' # Overwrite an existing file
-#' grattan_write_ai_guide(overwrite = TRUE)
+#' cie_write_ai_guide(overwrite = TRUE)
 #' }
-grattan_write_ai_guide <- function(filename = "CLAUDE.md",
+cie_write_ai_guide <- function(filename = "CLAUDE.md",
                                     path = ".",
                                     overwrite = FALSE) {
 
@@ -48,11 +48,11 @@ grattan_write_ai_guide <- function(filename = "CLAUDE.md",
   }
 
   template <- system.file("extdata", "ai_guide_template.md",
-                           package = "grattantheme")
+                           package = "cietheme")
 
   if (template == "") {
     stop("Could not find the AI guide template. ",
-         "Try reinstalling grattantheme.")
+         "Try reinstalling cietheme.")
   }
 
   if (!dir.exists(path)) {
