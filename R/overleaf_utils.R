@@ -1,8 +1,8 @@
 #' Get the Overleaf base path
 #'
-#' @description Finds the Apps/Overleaf folder in the user's Grattan Institute
+#' @description Finds the Apps/Overleaf folder in the user's Centre for International Economics
 #'   Dropbox by searching one level down from the Dropbox root, excluding
-#'   'data' and 'Grattan Team' folders.
+#'   'data' and 'CIE Team' folders.
 #'
 #' @return Character string containing the path to the Apps/Overleaf folder
 #'
@@ -28,7 +28,7 @@ get_overleaf_base_path <- function() {
 
   if (!"business" %in% names(dropbox_info)) {
     stop("Could not find business Dropbox. ",
-         "Please ensure you're syncing the Grattan Institute Dropbox.")
+         "Please ensure you're syncing the Centre for International Economics Dropbox.")
   }
 
   dropbox_path <- dropbox_info$business$path
@@ -67,7 +67,7 @@ find_overleaf_projects <- function(overleaf_base_path) {
 #'   to select from available projects.
 #'
 #' @details This function lets you choose which Overleaf project to save charts
-#'   to when using \code{grattan_save_overleaf()}. The setting is stored as an
+#'   to when using \code{cie_save_overleaf()}. The setting is stored as an
 #'   environment variable for the current R session only.
 #'
 #'   If you don't provide a project, you'll see a menu of available Overleaf
@@ -178,7 +178,7 @@ set_overleaf_project <- function(project = NULL) {
 #'   to select from available Overleaf projects in your Dropbox. Your choice
 #'   is stored as an environment variable for the current R session only.
 #'
-#' @details This function is called internally by \code{grattan_save_overleaf()},
+#' @details This function is called internally by \code{cie_save_overleaf()},
 #'   but can also be used directly if you need the Overleaf atlas path for other
 #'   purposes.
 #'
@@ -196,7 +196,7 @@ set_overleaf_project <- function(project = NULL) {
 #'   the selected Overleaf project.
 #'
 #' @seealso \code{\link{set_overleaf_project}} to change which project is used,
-#'   \code{\link{grattan_save_overleaf}} to save charts directly to Overleaf
+#'   \code{\link{cie_save_overleaf}} to save charts directly to Overleaf
 #'
 #' @export
 #'

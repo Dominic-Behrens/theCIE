@@ -20,7 +20,7 @@ colour_text(colour, text, is_note = FALSE, bold_labs = TRUE)
 }
 \description{
 This is a helper function to wrap the css to make text certain colours. This
-will be useful when making grattan charts. This should be used within `ggtext::geom_richtext()`
+will be useful when making cie charts. This should be used within `ggtext::geom_richtext()`
 or if being used in a sub-title or title it should be used in the `labs()` call together with
 `theme(plot.subtitle = element_markdown())`
 }

@@ -10,8 +10,8 @@ get_overleaf_base_path()
 Character string containing the path to the Apps/Overleaf folder
 }
 \description{
-Finds the Apps/Overleaf folder in the user's Grattan Institute
+Finds the Apps/Overleaf folder in the user's Centre for International Economics
   Dropbox by searching one level down from the Dropbox root, excluding
-  'data' and 'Grattan Team' folders.
+  'data' and 'CIE Team' folders.
 }
 \keyword{internal}

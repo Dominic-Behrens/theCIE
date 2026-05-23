@@ -1,6 +1,6 @@
-# Auto-detection of flipped/horizontal charts for theme_grattan()
+# Auto-detection of flipped/horizontal charts for theme_cie()
 #
-# When theme_grattan() is added to a plot via `+`, the ggplot_add method
+# When theme_cie() is added to a plot via `+`, the ggplot_add method
 # below inspects the plot to determine if it represents a horizontal/flipped
 # chart. If so, and the user hasn't explicitly set `flipped`, the theme is
 # rebuilt with flipped = TRUE and a throttled message is shown.
@@ -8,8 +8,8 @@
 
 #' @importFrom ggplot2 ggplot_add
 #' @export
-ggplot_add.grattan_theme <- function(object, plot, ...) {
-  args <- attr(object, "grattan_args")
+ggplot_add.cie_theme <- function(object, plot, ...) {
+  args <- attr(object, "cie_args")
 
   # Only run detection if flipped was left as NULL (the default)
   # and chart_type is not "scatter" (scatter ignores flipped)
@@ -19,7 +19,7 @@ ggplot_add.grattan_theme <- function(object, plot, ...) {
 
     if (.detect_flipped_chart(plot)) {
       # Rebuild theme with flipped = TRUE
-      object <- theme_grattan_normal(
+      object <- theme_cie_normal(
         base_size = args$base_size,
         base_family = args$base_family,
         background = args$background,
@@ -33,8 +33,8 @@ ggplot_add.grattan_theme <- function(object, plot, ...) {
   }
 
   # Strip custom class and attributes, delegate to standard theme adding
-  attr(object, "grattan_args") <- NULL
-  class(object) <- setdiff(class(object), "grattan_theme")
+  attr(object, "cie_args") <- NULL
+  class(object) <- setdiff(class(object), "cie_theme")
 
   ggplot2::ggplot_add(object, plot, ...)
 }
@@ -121,8 +121,8 @@ ggplot_add.grattan_theme <- function(object, plot, ...) {
 
   if (should_message) {
     message(
-      "grattantheme: Auto-detected a horizontal/flipped chart and applied ",
-      "`flipped = TRUE`. Set `theme_grattan(flipped = TRUE)` explicitly to ",
+      "cietheme: Auto-detected a horizontal/flipped chart and applied ",
+      "`flipped = TRUE`. Set `theme_cie(flipped = TRUE)` explicitly to ",
       "silence this message."
     )
     Sys.setenv(GRATTANTHEME_FLIP_LAST_MESSAGE = as.character(Sys.time()))

@@ -1,6 +1,6 @@
 #' Save a ggplot2 chart as a properly-formatted "chart data" Excel spreadsheet
 #'
-#' Grattan reports are accompanied by Excel workbooks containing the data used
+#' CIE reports are accompanied by Excel workbooks containing the data used
 #' to produce the chart ("chart data") and the chart itself. This function takes
 #' a ggplot2 object and creates a single-sheet Excel workbook with the chart
 #' data and chart. If your ggplot2 object has a subtitle and caption, those will
@@ -12,13 +12,13 @@
 #' file path, but the directory must already exist.
 #' @param object ggplot2 chart to create chart data from. If left blank,
 #' \code{ggplot2::last_plot()} is used to get the last plot displayed.
-#' @param type type of plot. Default is "normal". See \code{?grattan_save} for
+#' @param type type of plot. Default is "normal". See \code{?cie_save} for
 #' full list of types. Note that if labels (title,
 #' subtitle, caption) are included in your chart and height is not manually
 #' specified with the `height` argument, the plot height will be expanded a
 #' little to accommodate the labels.
 #' @param height Numeric, optional. Use this to override the default height
-#' for plots of your chosen `type`; see \code{?grattan_save} for more details.
+#' for plots of your chosen `type`; see \code{?cie_save} for more details.
 #' @param select_data Logical, default is TRUE. Removes any columns that are not
 #' used in ggplot mappings and facets from the exported chart data.
 #' @param round Numeric, optional. Round numbers in the chart data to this
@@ -37,7 +37,7 @@
 #' library(ggplot2)
 #' p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
 #'      geom_point() +
-#'      theme_grattan() +
+#'      theme_cie() +
 #'      labs(title = "Title",
 #'           subtitle = "Subtitle",
 #'           caption = "Caption")
@@ -64,7 +64,7 @@ save_chartdata <- function(filename,
   if (!type %in% chart_types$type) {
     stop(type,
          " is not a recognised chart type;",
-         " see ?grattan_save for types.")
+         " see ?cie_save for types.")
   }
 
 
@@ -98,7 +98,7 @@ save_chartdata <- function(filename,
   temp_image_location <- file.path(temp_path, paste0(image_name, ".png"))
   temp_image_end_location <- file.path(temp_path, image_name, paste0(image_name, "_", type, ".png"))
 
-  grattan_save(temp_image_location,
+  cie_save(temp_image_location,
                object = object,
                type = type,
                height = height,
@@ -190,50 +190,50 @@ save_chartdata <- function(filename,
                         dpi = 320)
 
   # Change font of entire sheet
-  grattan_font_style <- openxlsx::createStyle(fontName = "Arial",
+  cie_font_style <- openxlsx::createStyle(fontName = "Arial",
                                               fontSize = 11,
                                               halign = "center",
                                               fontColour = "#000000")
 
-  addStyle(wb, 1, grattan_font_style, cols = 1:100, rows = 1:2000,
+  addStyle(wb, 1, cie_font_style, cols = 1:100, rows = 1:2000,
            gridExpand = TRUE)
 
   # Bold title
 
-  grattan_title_style <- openxlsx::createStyle(textDecoration = "bold",
+  cie_title_style <- openxlsx::createStyle(textDecoration = "bold",
                                                halign = "left",
                                                fontSize = 12)
 
-  addStyle(wb, 1, grattan_title_style, cols = 2, rows = 1, stack = TRUE)
+  addStyle(wb, 1, cie_title_style, cols = 2, rows = 1, stack = TRUE)
 
   # Italicise caption
 
-  grattan_caption_style <- openxlsx::createStyle(textDecoration = c("italic",
+  cie_caption_style <- openxlsx::createStyle(textDecoration = c("italic",
                                                                     "underline"),
                                                  halign = "left")
 
   addStyle(wb,
            1,
-           grattan_caption_style,
+           cie_caption_style,
            rows = 5 + max_data_rows,
            cols = 2,
            stack = TRUE)
 
   # Define the styles needed for formatting the chart data boxes
 
-  grattan_table_style <- openxlsx::createStyle(fgFill = grattantheme::grattan_orange_alpha,
-                                               bgFill = grattantheme::grattan_orange_alpha,
+  cie_table_style <- openxlsx::createStyle(fgFill = cietheme::cie_orange_alpha,
+                                               bgFill = cietheme::cie_orange_alpha,
                                                wrapText = TRUE)
 
-  grattan_border <- function(border,
-                             border_colour = grattantheme::grattan_lightorange,
+  cie_border <- function(border,
+                             border_colour = cietheme::cie_lightorange,
                              border_style = "thick") {
     openxlsx::createStyle(border = border,
                           borderColour = border_colour,
                           borderStyle = border_style)
   }
 
-  grattan_heading_style <- openxlsx::createStyle(textDecoration = "bold")
+  cie_heading_style <- openxlsx::createStyle(textDecoration = "bold")
 
   # Create a list of dataframes to write
 
@@ -265,7 +265,7 @@ save_chartdata <- function(filename,
     # Orange fill for table
 
     addStyle(wb, 1,
-             grattan_table_style,
+             cie_table_style,
              cols = 2:(data_columns + 1),
              rows = current_row:(current_row + data_rows),
              stack = TRUE,
@@ -275,7 +275,7 @@ save_chartdata <- function(filename,
 
     addStyle(wb,
              1,
-             grattan_heading_style,
+             cie_heading_style,
              rows = current_row,
              cols = 2:(data_columns + 1),
              stack = TRUE)
@@ -283,25 +283,25 @@ save_chartdata <- function(filename,
     # Add borders
 
     openxlsx::addStyle(wb, 1,
-                       grattan_border("left"),
+                       cie_border("left"),
                        rows = current_row:(current_row + data_rows),
                        cols = 2,
                        stack = TRUE)
 
     openxlsx::addStyle(wb, 1,
-                       grattan_border("right"),
+                       cie_border("right"),
                        rows = current_row:(current_row + data_rows),
                        cols = data_columns + 1,
                        stack = TRUE)
 
     openxlsx::addStyle(wb, 1,
-                       grattan_border("top"),
+                       cie_border("top"),
                        rows = current_row,
                        cols = 2:(data_columns + 1),
                        stack = TRUE)
 
     openxlsx::addStyle(wb, 1,
-                       grattan_border("bottom"),
+                       cie_border("bottom"),
                        rows = current_row + data_rows,
                        cols = 2:(data_columns + 1),
                        stack = TRUE)

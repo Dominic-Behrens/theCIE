@@ -129,7 +129,7 @@ test_that("get_overleaf_project creates atlas directory", {
   unlink(temp_project, recursive = TRUE)
 })
 
-test_that("grattan_save_overleaf saves to correct location", {
+test_that("cie_save_overleaf saves to correct location", {
   skip_on_cran()
 
   temp_project <- file.path(tempdir(), "Test-Project")
@@ -143,14 +143,14 @@ test_that("grattan_save_overleaf saves to correct location", {
   library(ggplot2)
   test_plot <- ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
 
-  grattan_save_overleaf("test_chart.pdf", object = test_plot)
+  cie_save_overleaf("test_chart.pdf", object = test_plot)
 
   expect_true(file.exists(file.path(temp_atlas, "test_chart_normal.pdf")))
 
   unlink(temp_project, recursive = TRUE)
 })
 
-test_that("grattan_save_overleaf uses last_plot by default", {
+test_that("cie_save_overleaf uses last_plot by default", {
   skip_on_cran()
 
   temp_project <- file.path(tempdir(), "Test-Project")
@@ -164,7 +164,7 @@ test_that("grattan_save_overleaf uses last_plot by default", {
   ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
 
   # Should use last_plot without specifying object
-  grattan_save_overleaf("last_plot_test.pdf")
+  cie_save_overleaf("last_plot_test.pdf")
 
   expect_true(file.exists(file.path(temp_atlas, "last_plot_test_normal.pdf")))
 

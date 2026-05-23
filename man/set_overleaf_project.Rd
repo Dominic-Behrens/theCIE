@@ -20,7 +20,7 @@ Set or reset the Overleaf project location
 }
 \details{
 This function lets you choose which Overleaf project to save charts
-  to when using \code{grattan_save_overleaf()}. The setting is stored as an
+  to when using \code{cie_save_overleaf()}. The setting is stored as an
   environment variable for the current R session only.
 
   If you don't provide a project, you'll see a menu of available Overleaf

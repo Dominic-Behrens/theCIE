@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrap_labs.R
 \name{wrap_labs}
 \alias{wrap_labs}
-\title{Format title, subtitle, and caption of a ggplot2 chart in the Grattan style.}
+\title{Format title, subtitle, and caption of a ggplot2 chart in the CIE style.}
 \usage{
 wrap_labs(
   object,
@@ -18,7 +18,7 @@ modify.}
 \item{type}{The type of chart you intend to save (different chart types have
 different numbers of characters on each line). `type` can be 'normal',
 'fullslide', 'blog', etc. For a full list of possible types, see
-\code{?grattan_save()}.}
+\code{?cie_save()}.}
 
 \item{labs_to_wrap}{Default is c("title", "subtitle", "caption"), which
 wraps all three labels. Choose one or two if you only want to wrap those.}
@@ -30,17 +30,17 @@ won't be performed. This is useful if using ggtext syntax within titles.}
 Use `wrap_labs()` to wrap the title, subtitle, and caption of a ggplot2 chart
 onto multiple lines, left-align them, and split 'notes' and 'source' onto
 multiple lines. Note that this is done automatically for you if you use
-`grattan_save()` - there is no need to use `wrap_labs()` if you also plan to
-use `grattan_save()`.
+`cie_save()` - there is no need to use `wrap_labs()` if you also plan to
+use `cie_save()`.
 }
 \examples{
 
 library(ggplot2)
 p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
     geom_point() +
-    theme_grattan() +
+    theme_cie() +
     labs(title = "My title goes here and is quite long and needs to break
-    over two lines, as is common for Grattan charts",
+    over two lines, as is common for CIE charts",
     subtitle = "Subtitle goes here",
     caption = "Notes: Put some notes here. Source: Put your source here.")
 

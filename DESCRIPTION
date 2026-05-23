@@ -1,17 +1,21 @@
-Package: grattantheme
+Package: cietheme
 Type: Package
-Title: Create Graphs in the Grattan Institute Style
-Version: 1.5
+Title: Create Graphs in the CIE Style
+Version: 0.1.0
 Authors@R: c(
-    person("Matt", "Cowgill", 
-                role = c("aut")),
+    person(given = "Dominic", family = "Behrens",
+                email = "dbehrens@thecie.com.au",
+                role = c("aut", "cre")),
+    person(given = "Centre for International Economics",
+                role = c("cph", "fnd")),
+    person("Matt", "Cowgill",
+                role = c("aut"),
+                comment = "Original grattantheme author"),
     person(given = "Will", family = "Mackey",
-                role = c("aut")),
-    person(given = "Grattan Institute",
-                email = "info@grattan.edu.au",
-                role = c("cre")))
-Description: Enables the user to create ggplot2 charts that conform 
-    to the Grattan Institute style guide. 
+                role = c("aut"),
+                comment = "Original grattantheme author"))
+Description: Enables the user to create ggplot2 charts that conform
+    to The CIE style guide. Forked from grattantheme.
 License: MIT + file LICENSE
 Depends: R (>= 3.5.0)
 Imports:

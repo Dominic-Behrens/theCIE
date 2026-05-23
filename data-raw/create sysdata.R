@@ -1,7 +1,7 @@
 library(devtools)
 library(dplyr)
 
-logo <- magick::image_read("data-raw/GrattanPNGlogo.png")
+logo <- magick::image_read("data-raw/CIEPNGlogo.png")
 
 logogrob <- grid::rasterGrob(logo)
 

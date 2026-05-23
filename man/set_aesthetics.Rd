@@ -7,10 +7,10 @@
 set_aesthetics(type)
 }
 \arguments{
-\item{type}{(character) Which aesthetics to use? One of "grattan" or "vanilla".}
+\item{type}{(character) Which aesthetics to use? One of "cie" or "vanilla".}
 }
 \description{
-Sets global options for \code{ggplot2}. If \code{type = "grattan"}, grattan brand
+Sets global options for \code{ggplot2}. If \code{type = "cie"}, cie brand
 elements (colours and fonts) will be used by default in ggplot. To restore
 the defaults use \code{type = "vanilla"}.
 }

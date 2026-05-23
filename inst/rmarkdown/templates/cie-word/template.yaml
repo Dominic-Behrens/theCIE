@@ -1,0 +1,4 @@
+name: CIE Word Template
+description: >
+   Includes the core features of The CIE style, for use with RMarkdown documents
+create_dir: FALSE

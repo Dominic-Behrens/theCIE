@@ -20,14 +20,14 @@ file path, but the directory must already exist.}
 \item{object}{ggplot2 chart to create chart data from. If left blank,
 \code{ggplot2::last_plot()} is used to get the last plot displayed.}
 
-\item{type}{type of plot. Default is "normal". See \code{?grattan_save} for
+\item{type}{type of plot. Default is "normal". See \code{?cie_save} for
 full list of types. Note that if labels (title,
 subtitle, caption) are included in your chart and height is not manually
 specified with the `height` argument, the plot height will be expanded a
 little to accommodate the labels.}
 
 \item{height}{Numeric, optional. Use this to override the default height
-for plots of your chosen `type`; see \code{?grattan_save} for more details.}
+for plots of your chosen `type`; see \code{?cie_save} for more details.}
 
 \item{select_data}{Logical, default is TRUE. Removes any columns that are not
 used in ggplot mappings and facets from the exported chart data.}
@@ -36,7 +36,7 @@ used in ggplot mappings and facets from the exported chart data.}
 number of decimal places. Default is NULL, which does not round numbers.}
 }
 \description{
-Grattan reports are accompanied by Excel workbooks containing the data used
+CIE reports are accompanied by Excel workbooks containing the data used
 to produce the chart ("chart data") and the chart itself. This function takes
 a ggplot2 object and creates a single-sheet Excel workbook with the chart
 data and chart. If your ggplot2 object has a subtitle and caption, those will
@@ -47,7 +47,7 @@ be properly displayed in the spreadsheet.
 library(ggplot2)
 p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
      geom_point() +
-     theme_grattan() +
+     theme_cie() +
      labs(title = "Title",
           subtitle = "Subtitle",
           caption = "Caption")

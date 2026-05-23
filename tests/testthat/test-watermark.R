@@ -2,7 +2,7 @@ test_that("watermark adds watermark", {
   p <- mtcars %>%
     ggplot(aes(x = wt, y = mpg)) +
     geom_point() +
-    theme_grattan()
+    theme_cie()
 
   w <- watermark("DRAFT")
 

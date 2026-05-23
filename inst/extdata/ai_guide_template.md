@@ -1,7 +1,7 @@
-## Grattan Chart Style Guide
+## CIE Chart Style Guide
 
 This file provides guidance for creating charts that conform to the
-Grattan Institute style guide using the `grattantheme` R package.
+CIE style guide using the `cietheme` R package.
 
 ## Key Principles
 
@@ -16,9 +16,9 @@ Grattan Institute style guide using the `grattantheme` R package.
     to March 2025), include that here, but otherwise units are usually
     included directly on the axis labels (e.g. '\$20k' or '100%').
 -   **Caption**: If required, should include a "Notes:" section (clarifying key
-    points about the data). Must include a "Source:" section (e.g. "Grattan
+    points about the data). Must include a "Source:" section (e.g. "CIE
     analysis of ABS Census microdata (2021)"). Do NOT separate these with a
-    newline as `grattantheme` will insert linebreaks automatically.
+    newline as `cietheme` will insert linebreaks automatically.
 -   **Axis title**: The y-axis title is generally blank if not a
     scatterplot. The x-axis title can be blank if the units are self-evident
     (e.g. 2020, 2025) or otherwise explained in the subtitle.
@@ -26,7 +26,7 @@ Grattan Institute style guide using the `grattantheme` R package.
 ### Use direct labelling instead of legends
 
 Prefer direct labelling with coloured text over traditional legends. Use
-`annotate()` or `grattan_label()` to place text labels in the chart
+`annotate()` or `cie_label()` to place text labels in the chart
 area, coloured to match the data series:
 
 ``` r
@@ -38,16 +38,16 @@ geom_richlegend(aes(label = city),
 # EXAMPLE: Using annotate for manual positioning
 # You must adjust x/y coordinates to match your chart's data range
 annotate("text", x = 6, y = 15000,
-         colour = grattan_orange, label = "Sydney") +
+         colour = cie_orange, label = "Sydney") +
 annotate("text", x = 6, y = 13000,
-         colour = grattan_red, label = "Melbourne")
+         colour = cie_red, label = "Melbourne")
 
-# EXAMPLE: Using grattan_label for data-driven positioning
-grattan_label(
+# EXAMPLE: Using cie_label for data-driven positioning
+cie_label(
   data = label_data,
   aes(y = category, x = label_pos, label = series_name, colour = series),
   hjust = 0.5,
-  size = 16  # Note: grattan_label auto-converts to .pt
+  size = 16  # Note: cie_label auto-converts to .pt
 )
 ```
 
@@ -56,12 +56,12 @@ scale functions.
 
 ## Core Functions
 
-### theme_grattan()
+### theme_cie()
 
 The main theme function. Apply to all charts.
 
 ``` r
-theme_grattan(
+theme_cie(
   base_size = 18,        # Default font size (use 16 for smaller charts)
   base_family = "sans",
   chart_type = "normal", # or "scatter" for scatter plots
@@ -72,18 +72,18 @@ theme_grattan(
 )
 ```
 
-Note: as of grattantheme 1.5, `flipped` defaults to `NULL` and
+Note: as of cietheme 1.5, `flipped` defaults to `NULL` and
 auto-detects horizontal/flipped charts (e.g. `coord_flip()` or bar
 charts with a discrete y-axis). A message is shown when auto-detection
 fires. Set `flipped = TRUE` explicitly to silence the message, or
 `flipped = FALSE` to opt out.
 
-### grattan_save() and grattan_save_all()
+### cie_save() and cie_save_all()
 
-Save charts in Grattan-approved sizes.
+Save charts in CIE-approved sizes.
 
 ``` r
-grattan_save(
+cie_save(
   filename = "path/to/chart.pdf",
   object = my_chart,
   type = "normal",        # See chart types below
@@ -95,10 +95,10 @@ grattan_save(
 )
 
 # Shortcut for all formats with pptx and data to a named subdirectory:
-grattan_save_all("chart.pdf", my_chart)
+cie_save_all("chart.pdf", my_chart)
 ```
 
-Often chart-making scripts should end with `grattan_save_all()` as this
+Often chart-making scripts should end with `cie_save_all()` as this
 ensures all chart formats and chart data are available at a later stage
 for use, without having to re-run the code.
 
@@ -112,7 +112,7 @@ for use, without having to re-run the code.
 - `fullslide_half` - Half-width for side-by-side
 - `all` - Save in all formats
 
-### grattan_save_overleaf()
+### cie_save_overleaf()
 
 Save directly to Overleaf project atlas folder. You must first define
 the atlas path using `set_overleaf_project()`. Usually this can be done
@@ -121,43 +121,43 @@ scripts.
 
 ``` r
 set_overleaf_project("project-name")  # Set once per session
-grattan_save_overleaf("chart.pdf", my_chart, type = "normal")
+cie_save_overleaf("chart.pdf", my_chart, type = "normal")
 ```
 
 ## Axis Scales - Avoiding Gaps
 
 Use these functions to ensure no gap between axis and data:
 
-### grattan_y_continuous() / scale_y_continuous_grattan()
+### cie_y_continuous() / scale_y_continuous_cie()
 
 ``` r
 # Basic usage - removes gap at top/bottom
-grattan_y_continuous()
+cie_y_continuous()
 
 # With limits
-grattan_y_continuous(limits = c(0, NA))
+cie_y_continuous(limits = c(0, NA))
 
 # For percentages (data in decimal format 0-1)
-grattan_y_continuous(
+cie_y_continuous(
   labels = scales::label_percent(),
   limits = c(0, 1),
   breaks = c(0, 0.25, 0.5, 0.75, 1)
 )
 
 # For dollars
-grattan_y_continuous(labels = scales::label_currency())
+cie_y_continuous(labels = scales::label_currency())
 
 # Custom expand parameters
-grattan_y_continuous(
+cie_y_continuous(
   expand_bottom = 0,      # Default 0 - no gap at bottom
   expand_top = 0.015      # Default 0.015 - small gap at top
 )
 ```
 
-### grattan_x_continuous() / scale_x_continuous_grattan()
+### cie_x_continuous() / scale_x_continuous_cie()
 
 ``` r
-scale_x_continuous_grattan(
+scale_x_continuous_cie(
   expand_left = 0,        # Default 0 - no gap at left
   expand_right = 0.015    # Default 0.015 - small gap at right
 )
@@ -171,7 +171,7 @@ of doubt.
 But another approach is as follows:
 
 ``` r
-scale_y_continuous_grattan(
+scale_y_continuous_cie(
   labels = function(x) paste0(x, "%"),
   breaks = c(0, 25, 50, 75, 100)
 )
@@ -179,12 +179,12 @@ scale_y_continuous_grattan(
 
 ## Labelling Functions
 
-### grattan_label()
+### cie_label()
 
-Creates labels with no border and minimal padding (Grattan style):
+Creates labels with no border and minimal padding (CIE style):
 
 ``` r
-grattan_label(
+cie_label(
   data = label_data,
   aes(x = x_pos, y = y_pos, label = text, colour = group),
   size = 18,           # Font size (auto-converted to .pt)
@@ -194,23 +194,23 @@ grattan_label(
 )
 ```
 
-### grattan_label_repel()
+### cie_label_repel()
 
 Same as above but uses `ggrepel` to avoid overlapping labels:
 
 ``` r
-grattan_label_repel(
+cie_label_repel(
   aes(label = text),
   size = 18
 )
 ```
 
-### grattan_point_filled()
+### cie_point_filled()
 
 Create points with white centres (useful for line charts):
 
 ``` r
-grattan_point_filled(
+cie_point_filled(
   mapping = NULL,    # Inherits plot aesthetics by default
   data = NULL,       # Inherits plot data by default
   size = 3,
@@ -221,7 +221,7 @@ grattan_point_filled(
 
 # Common pattern - add filled points at end of lines
 geom_line() +
-grattan_point_filled(data = . %>% filter(date == max(date)))
+cie_point_filled(data = . %>% filter(date == max(date)))
 ```
 
 ## Colour Palette
@@ -230,44 +230,44 @@ grattan_point_filled(data = . %>% filter(date == max(date)))
 
 Primary palette (use in this order for discrete scales):
 
-- `grattan_orange` - Primary colour
-- `grattan_red` - Secondary colour
-- `grattan_yellow` - Third colour
-- `grattan_darkorange` - Fourth colour
-- `grattan_darkred` - Fifth colour
+- `cie_orange` - Primary colour
+- `cie_red` - Secondary colour
+- `cie_yellow` - Third colour
+- `cie_darkorange` - Fourth colour
+- `cie_darkred` - Fifth colour
 
 Additional colours:
 
-- `grattan_blue`, `grattan_darkblue`
-- `grattan_grey1` through `grattan_grey5`
-- `grattan_black`
-- `grattan_box` / `grattan_orange_alpha` - For box backgrounds
+- `cie_blue`, `cie_darkblue`
+- `cie_grey1` through `cie_grey5`
+- `cie_black`
+- `cie_box` / `cie_orange_alpha` - For box backgrounds
 
-Each colour has faded variants (1-8), e.g. `grattan_orange3`,
-`grattan_red5`.
+Each colour has faded variants (1-8), e.g. `cie_orange3`,
+`cie_red5`.
 
 ### Colour Scales
 
-Generally just leave `grattantheme` to do its own colour scales unless
+Generally just leave `cietheme` to do its own colour scales unless
 you are specifically requested to take another approach.
 
 If you need to create a manual colour palette, you can do as follows:
 
 ``` r
 # For discrete scales (automatic ordering)
-scale_colour_grattan(discrete = TRUE)
-scale_fill_grattan(discrete = TRUE)
+scale_colour_cie(discrete = TRUE)
+scale_fill_cie(discrete = TRUE)
 
 # For continuous scales
-scale_colour_grattan(discrete = FALSE, palette = "sequential")
-scale_fill_grattan(discrete = FALSE, palette = "diverging")
+scale_colour_cie(discrete = FALSE, palette = "sequential")
+scale_fill_cie(discrete = FALSE, palette = "diverging")
 
 # Manual assignment (preferred for control)
 scale_fill_manual(values = c(
-  "Category A" = grattan_yellow,
-  "Category B" = grattan_orange,
-  "Category C" = grattan_darkorange,
-  "Category D" = grattan_red
+  "Category A" = cie_yellow,
+  "Category B" = cie_orange,
+  "Category C" = cie_darkorange,
+  "Category D" = cie_red
 ))
 ```
 
@@ -319,7 +319,7 @@ check_chart(type = "fullslide", my_chart)
 ggplot(data, aes(y = category, x = pct, fill = group)) +
   geom_col(position = "stack", width = 0.7) +
   scale_fill_manual(values = my_colors, guide = "none") +
-  grattan_label(
+  cie_label(
     data = label_data,
     aes(y = category, x = label_pos, label = group, colour = group),
     hjust = 0.5,
@@ -328,7 +328,7 @@ ggplot(data, aes(y = category, x = pct, fill = group)) +
   ) +
   scale_colour_manual(values = my_colors, guide = "none") +
   coord_cartesian(xlim = c(0, 100), clip = "off") +
-  theme_grattan(base_size = 14) +
+  theme_cie(base_size = 14) +
   theme(legend.position = "none")
 ```
 
@@ -344,7 +344,7 @@ data %>%
                 colour = if_else(number < 0.05, 'black', 'white')),
             size = 16 / .pt) +
   scale_color_manual(values = c('black', 'white')) +
-  theme_grattan(flipped = TRUE)
+  theme_cie(flipped = TRUE)
 ```
 
 ### A 'dumbbell' chart that shows start and end-points of data
@@ -357,7 +357,7 @@ data %>%
   filter(date == max(date) | date == min(date)) %>%
   mutate(date = factor(year(date))) %>%
   ggplot(aes(x = price_to_income, y = fct_rev(region), colour = date)) +
-  grattan_x_continuous(limits = c(2, 10),
+  cie_x_continuous(limits = c(2, 10),
                      breaks = c(2, 4, 6, 8, 10)) +
   geom_segment(data = . %>%
                  pivot_wider(names_from = date,
@@ -365,19 +365,19 @@ data %>%
                aes(x = `2001`+ 0.05, xend = `2024` - 0.12,
                    y = fct_rev(region)),
                inherit.aes = FALSE,
-               colour = grattan_grey4, linewidth = 0.7,
+               colour = cie_grey4, linewidth = 0.7,
                arrow = arrow(length = unit(0.035, "npc"),
                              type = 'closed')) +
-  grattan_point_filled() +
-  grattan_label(data = tibble(x = 3.7, y = 7,
+  cie_point_filled() +
+  cie_label(data = tibble(x = 3.7, y = 7,
                            label = '2001', urban = 'Capital cities'),
              aes(x = x, y = y, label = label),
-             colour = grattan_orange) +
-  grattan_label(data = tibble(x = 9.3, y = 7,
+             colour = cie_orange) +
+  cie_label(data = tibble(x = 9.3, y = 7,
                            label = '2024', urban = 'Capital cities'),
-             aes(x = x, y = y, label = label), colour = grattan_red) +
+             aes(x = x, y = y, label = label), colour = cie_red) +
   facet_wrap(~urban, scales = 'free_y', ncol = 1) +
-  theme_grattan(flipped = TRUE)
+  theme_cie(flipped = TRUE)
 
 ```
 
@@ -386,9 +386,9 @@ data %>%
 ``` r
 ggplot(data, aes(x = date, y = value, colour = series)) +
   geom_line() +
-  grattan_point_filled(data = . %>% filter(date == max(date))) +
-  grattan_y_continuous(labels = scales::label_percent()) +
-  grattan_label(
+  cie_point_filled(data = . %>% filter(date == max(date))) +
+  cie_y_continuous(labels = scales::label_percent()) +
+  cie_label(
     data = . %>% filter(date == max(date)),
     aes(label = series),
     hjust = 0
@@ -399,7 +399,7 @@ ggplot(data, aes(x = date, y = value, colour = series)) +
 
 ``` r
 geom_sf(aes(fill = category), colour = "white", size = 0.3) +
-theme_grattan(panel_borders = TRUE) +
+theme_cie(panel_borders = TRUE) +
 theme(
   axis.title = element_blank(),
   axis.text = element_blank(),
@@ -418,8 +418,8 @@ For `annotate()` and `geom_text()`, use `.pt` conversion:
 size = 16 / .pt    # Small labels
 size = 18 / .pt    # Standard labels
 
-# grattan_label() auto-converts, so just use:
-grattan_label(size = 16)  # No need for /.pt
+# cie_label() auto-converts, so just use:
+cie_label(size = 16)  # No need for /.pt
 ```
 
 ## Code styling
@@ -490,8 +490,7 @@ data <- read_abs(series_id = vars)
 ```
 
 Any sensitive data (e.g. ABS or ATO microdata) should be stored in the
-Grattan data warehouse. Use the `read_microdata` function from the
-`grattandata` package to read that data in.
+CIE data warehouse.
 
 ### Exporting key stats to LaTeX
 
@@ -501,7 +500,7 @@ must first define the atlas path - either manually or via
 
 ``` r
 # Option 1: Define atlas path manually (required at start of script)
-atlas <- "C:/Users/username/Grattan Institute Dropbox/.../Apps/Overleaf/project-name/atlas/"
+atlas <- "C:/Users/username/CIE Dropbox/.../Apps/Overleaf/project-name/atlas/"
 
 # Option 2: Or use set_overleaf_project() and get the path
 set_overleaf_project("project-name")
